@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Name:        Clocklock
+# Name:        Cliclock
 # Author:      Lélia - Dali - Meïssa - Manon
 # Purpose:     Project's main program
 # Created:     01/02/2024

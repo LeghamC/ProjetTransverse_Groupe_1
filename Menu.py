@@ -39,7 +39,7 @@ timer_rect = text_timer.get_rect(topright = (1215,50))
 
 # PLATEFORM SURFACE
 plateform = pygame.Surface((50,5))
-plateform_rect = plateform.get_rect(bottomleft = (350,220))
+plateform_rect = plateform.get_rect(bottomleft = (350, 220))
 # Color of the plateform with hex color code
 plateform.fill("#BBDE22")
 

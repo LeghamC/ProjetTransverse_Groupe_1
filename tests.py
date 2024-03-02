@@ -3,6 +3,8 @@
 import pygame
 import level_saver
 import collisions
+import scrolling
+import constants
 from sys import exit
 
 # CONSTANTS
@@ -11,7 +13,7 @@ FPS = 60
 
 # CREATION OF THE GRAPHIC WINDOW
 pygame.init()
-window = pygame.display.set_mode((1224, 460))
+window = pygame.display.set_mode((constants.SCREEN_W, constants.SCREEN_H))
 pygame.display.set_caption("Shiho<3")
 clock = pygame.time.Clock()
 dt = clock.tick(FPS)
@@ -35,6 +37,9 @@ elements = level_saver.list_of_elements(level_content, PLAYER_SPEED)
 pygame.mixer.music.load("levels/level_0/music.mid")
 pygame.mixer.music.play()
 
+# CAMERA
+camera_x = 0
+
 # Loop to keep the window open
 while True:
     for event in pygame.event.get():
@@ -50,8 +55,6 @@ while True:
                 player_gravity = -15
     if active:
         window.fill((255, 255, 255))
-        for element in elements:
-            window.blit(pygame.Surface((element.w, element.h)), element)
 
         # Gravity of player's jumps
         player_gravity += 1
@@ -61,6 +64,15 @@ while True:
         # Player moving from left to right
         player_x += PLAYER_SPEED*dt/1000
         player_rect.right = player_x
+
+        camera_x = scrolling.update_camera_pos(camera_x, player_rect)
+        for element in elements:
+            scrolling.camera_render(
+                pygame.Surface((element.w, element.h)),
+                element,
+                window,
+                camera_x
+            )
 
         # ANIMATION
         # Background moving from right to left
@@ -91,7 +103,12 @@ while True:
         if player_rect.collidepoint(mouse_pos):
             print("Collision cursor")
 
-        window.blit(player_shiho, player_rect)
+        scrolling.camera_render(
+            player_shiho,
+            player_rect,
+            window,
+            camera_x
+        )
 
     else:
         window.fill("Red")

@@ -1,0 +1,4 @@
+
+
+SCREEN_W = 1224
+SCREEN_H = 460

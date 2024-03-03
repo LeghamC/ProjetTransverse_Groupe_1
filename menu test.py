@@ -1,7 +1,7 @@
 import pygame
 import math
 from sys import exit
-from arrow import Vector, add_vectors
+from physics import Vector, add_vectors
 
 # Initialization of pygame
 pygame.init()
@@ -42,7 +42,8 @@ arrow_image = pygame.transform.scale(arrow_image, (40, 20))
 
 # Initialize aiming variables
 aiming = False
-arrow_angle = 0
+arrow_angle = -90
+direction = 1  # 1 for clockwise, -1 for counter-clockwise
 arrow_radius = 50  # Distance from player
 
 # Loop to keep the window open
@@ -68,7 +69,7 @@ while True:
 
                 # Stop aiming and reset arrow angle
                 aiming = False
-                arrow_angle = 0
+                arrow_angle = -90
 
     if active:
         window.blit(background_1, (background_xpos, 0))
@@ -107,10 +108,12 @@ while True:
             window.blit(arrow_image_rotated, arrow_rect)
 
             # Increment arrow angle for next frame
-            if arrow_angle <= 85 :
-                arrow_angle += 5
-            if arrow_angle == 90 and arrow_angle >= 270:
-                arrow_angle -=5
+            arrow_angle += 3 * direction
+
+            # Change direction at 90 and -90 degrees
+            if arrow_angle >= 90 or arrow_angle <= -90:
+                direction *= -1
+
         # Update player position based on velocity
         if aiming:
             player_rect.x += player_velocity.magnitude * math.cos(math.radians(arrow_angle))

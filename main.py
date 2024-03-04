@@ -5,9 +5,13 @@
 # Created:     01/02/2024
 # -------------------------------------------------------------------------------
 
-if __name__ == '__main__':
+# IMPORTATIONS OF MODULES
+import pygame
+import math
+from sys import exit
+from physics import *
+from menu import *
 
-    # importations
-    import pygame
+if __name__ == '__main__':
 
     """ """

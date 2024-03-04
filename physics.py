@@ -54,6 +54,6 @@ def add_vectors(vector1: Vector, vector2: Vector) -> Vector:
 
 # CONSTANTS FOR PHYSICS SIMULATION
 gravity = Vector(0.2, 180)  # Represents the downward force
-inverse_friction = 0.99  # Coefficient for simulation of friction
+friction = 0.99  # Coefficient for simulation of friction
 elasticity = 0.8  # Coefficient of kinetic energy preserved in collisions
 block_elasticity = 0.7  # Coefficient of kinetic energy preserved in block collisions

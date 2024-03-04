@@ -4,7 +4,6 @@
 # Purpose:     Project's menu - the game's window
 # Created:     01/02/2024
 # -------------------------------------------------------------------------------
-import sys
 
 # IMPORTATIONS OF MODULES
 import pygame
@@ -16,12 +15,17 @@ from physics import *
 pygame.init()
 
 # Create a window for the menu
-window = pygame.display.set_mode((600, 500)) # width, height
+window = pygame.display.set_mode((600, 500))
 pygame.display.set_caption("Shiho<3")
 clock = pygame.time.Clock()
 font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf", 30)
 active = True
 
-def close():
-    pygame.quit()
-    sys.exit()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+
+    pygame.display.update()
+    clock.tick(60)

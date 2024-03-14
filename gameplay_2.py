@@ -1,6 +1,6 @@
 # -------------------------------------------------------------------------------
 # Name:        ???
-# Author:      Lélia - Dali - Meïssa - Manon
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
 # Purpose:     Project's menu - the game's window
 # Created:     01/02/2024
 # -------------------------------------------------------------------------------
@@ -13,7 +13,7 @@ from sys import exit
 # Initialization of pygame
 pygame.init()
 # Opening of pygame window (width ,height)
-window = pygame.display.set_mode((1224,460))
+window = pygame.display.set_mode((1224,420))
 # Name of the game as window's name
 pygame.display.set_caption("Shiho<3")
 # Control the frame rate

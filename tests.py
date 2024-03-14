@@ -59,10 +59,11 @@ while True:
         # Gravity of player's jumps
         player_gravity += 1
         player_rect.y += player_gravity
-        if player_rect.bottom > 461:
+        if player_rect.bottom >= 461:
             player_rect.bottom = 460
+
         # Player moving from left to right
-        player_x += PLAYER_SPEED*dt/1000
+        player_x += PLAYER_SPEED * dt * 0.001
         player_rect.right = player_x
 
         camera_x = scrolling.update_camera_pos(camera_x, player_rect)

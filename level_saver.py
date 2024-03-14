@@ -24,7 +24,9 @@ def save_level(file_name: str, file_content: list[list]) -> None:
 
 
 # Allows to load the content of a level from the name of the file
+# Returns the content of the level
 def load_level(file_name: str) -> list[list]:
+    import 
     content = []
     with open(file_name, 'r') as csv_file:
         reader = csv.reader(
@@ -42,7 +44,9 @@ def position_on_screen(element_time: float, player_speed: int) -> int:
     return int(player_speed * element_time)
 
 
-def length_element(element_duration: float, player_speed: int) -> int:
+# Takes an element's duration and the player's speed and returns the width
+# that the element should have
+def width_element(element_duration: float, player_speed: int) -> int:
     return element_duration * player_speed
 
 
@@ -55,7 +59,7 @@ def list_of_elements(level_content: list[list],
         x = position_on_screen(i[0], player_speed)
         y = i[2]
         h = 20
-        w = length_element(i[1], player_speed)
+        w = width_element(i[1], player_speed)
 
         elements.append(pygame.Rect(x, y, w, h))
     return elements
@@ -82,6 +86,7 @@ def make_content(tempo: int, notes: list[list[float, int, bool]]):
     return elements
 
 
+# Tutorial level content
 level_content = make_content(
     tempo=80,
     notes=[

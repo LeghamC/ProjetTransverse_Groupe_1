@@ -1,15 +1,7 @@
-# -------------------------------------------------------------------------------
-# Name:        ???
-# Author:      Lélia - Dali - Meïssa - Manon - Mathis
-# Purpose:     Project's menu - the game's window
-# Created:     01/02/2024
-# -------------------------------------------------------------------------------
-
-# IMPORTATIONS OF MODULES
 import pygame
 import math
 from sys import exit
-from physics import *
+from physics import Vector, add_vectors
 
 # Initialization of pygame
 pygame.init()

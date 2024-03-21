@@ -1,16 +1,27 @@
 import pygame
 import math
 from sys import exit
-from physics import Vector, add_vectors
+from physics import Vector, make_vector_polar
+import level_saver
+import collisions
+import scrolling
+import constants
+
+
+# CONSTANTS
+PLAYER_SPEED = 120
+FPS = 60
+
 
 # Initialization of pygame
 pygame.init()
 
 # Create a window
-window = pygame.display.set_mode((1224, 420))
+window = pygame.display.set_mode((constants.SCREEN_W, constants.SCREEN_H))
 pygame.display.set_caption("Shiho<3")
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf", 30)
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
+dt = clock.tick(FPS) * 0.001
 active = True
 
 # Load images and create surfaces
@@ -25,20 +36,26 @@ score_rect = text_score.get_rect(topright=(1215, 10))
 text_timer = font.render("Timer 00.00", True, "white")
 timer_rect = text_timer.get_rect(topright=(1215, 50))
 
-platform = pygame.Surface((50, 5))
-platform_rect = platform.get_rect(bottomleft=(350, 220))
-platform.fill("#BBDE22")
-
-player_shiho = pygame.image.load("Images/PLayer/shiho_dollF.png").convert_alpha()
+player_shiho = pygame.Surface((50, 50))
 player_rect = player_shiho.get_rect(bottomleft=(0, 420))
-player_velocity = Vector(0, 0)  # Initial player velocity
-player_gravity = Vector(0, 1)  # Gravity vector
+player_position = Vector(0, 420)
+player_velocity = Vector(PLAYER_SPEED, 0)  # Initial player velocity
+player_acceleration = Vector(0, 150)  # Gravity vector
 
 game_over_text = font.render("GAME OVER", True, "black")
 game_over_rect = game_over_text.get_rect(center=(612, 230))
 
 arrow_image = pygame.image.load("Images/arrow_beta.png").convert_alpha()
 arrow_image = pygame.transform.scale(arrow_image, (40, 20))
+
+# LOADING LEVEL
+level_content = level_saver.load_level("levels/level_0/content.csv")
+elements = level_saver.list_of_elements(level_content, PLAYER_SPEED)
+pygame.mixer.music.load("levels/level_0/music.mid")
+pygame.mixer.music.play()
+
+# CAMERA
+camera_x = 0
 
 # Initialize aiming variables
 aiming = False
@@ -61,11 +78,8 @@ while True:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_SPACE:
                 # Player is shot in the direction of the arrow when space bar is released
-                player_velocity = add_vectors(player_velocity, Vector(5 * math.cos(math.radians(arrow_angle)), -5 * math.sin(math.radians(arrow_angle))))
-                player_rect.x += 10
-                player_rect.y += 10
-                player_rect.centerx -= 10
-                player_rect.centery -= 10
+                player_velocity.y += make_vector_polar(200, -arrow_angle).y
+                print(player_velocity)
 
                 # Stop aiming and reset arrow angle
                 aiming = False
@@ -77,12 +91,24 @@ while True:
         window.blit(background_1, (background_xpos3, 0))
         window.blit(text_score, score_rect)
         window.blit(text_timer, timer_rect)
-        window.blit(platform, platform_rect)
 
-        player_velocity = add_vectors(player_velocity, player_gravity)
-        player_rect.y += player_velocity.magnitude
-        if player_rect.bottom > 420:
-            player_rect.bottom = 420
+        camera_x = scrolling.update_camera_pos(camera_x, player_rect)
+        for element in elements:
+            scrolling.camera_render(
+                pygame.Surface((element.w, element.h)),
+                element,
+                window,
+                camera_x
+            )
+
+        player_velocity += player_acceleration * dt
+        player_position += player_velocity * dt
+        player_rect.y = player_position.y
+        player_rect.x = player_position.x
+        if player_rect.bottom > constants.SCREEN_H:
+            player_velocity = Vector(PLAYER_SPEED, 0)
+            player_position.y = constants.SCREEN_H - 50
+            player_rect.bottom = constants.SCREEN_H
 
         background_xpos -= 2
         background_xpos2 -= 2
@@ -91,9 +117,6 @@ while True:
             background_xpos = 0
             background_xpos2 = 612
             background_xpos3 = 1224
-
-        # Draw the player
-        window.blit(player_shiho, player_rect)
 
         if aiming:
             # Update arrow position on a semicircle path to the right of the player
@@ -105,29 +128,42 @@ while True:
             arrow_rect = arrow_image_rotated.get_rect(center=(arrow_x, arrow_y))
 
             # Draw the arrow
-            window.blit(arrow_image_rotated, arrow_rect)
+            scrolling.camera_render(
+                arrow_image_rotated,
+                arrow_rect,
+                window,
+                camera_x
+            )
 
             # Increment arrow angle for next frame
-            arrow_angle += 3 * direction
+            arrow_angle += 5 * direction
 
             # Change direction at 90 and -90 degrees
             if arrow_angle >= 90 or arrow_angle <= -90:
                 direction *= -1
 
-        # Update player position based on velocity
-        if aiming:
-            player_rect.x += player_velocity.magnitude * math.cos(math.radians(arrow_angle))
-            player_rect.y += player_velocity.magnitude * -math.sin(math.radians(arrow_angle))
-
         # Collision detection
-        if player_rect.colliderect(platform_rect):
-            active = False
-        if player_rect.collidepoint(pygame.mouse.get_pos()):
-            print("Collision cursor")
+        for element in elements:
+            if element.x > player_rect.right:
+                break
+            if player_rect.colliderect(element):
+                if collisions.top_collision(player_rect, element):
+                    player_position.y = element.top - 50
+                    player_rect.bottom = element.top
+                    player_velocity = Vector(PLAYER_SPEED, 0)
+                else:
+                    pygame.mixer.music.stop()
+                    active = False
 
+        scrolling.camera_render(
+            player_shiho,
+            player_rect,
+            window,
+            camera_x
+        )
     else:
         window.fill("red")
         window.blit(game_over_text, game_over_rect)
 
     pygame.display.update()
-    clock.tick(60)
+    dt = clock.tick(FPS) * 0.001

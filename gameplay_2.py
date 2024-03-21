@@ -8,23 +8,31 @@
 # IMPORTATIONS OF MODULES
 import pygame
 from sys import exit
+import level_saver
+import collisions
+import scrolling
+import constants
+
+# CONSTANTS
+PLAYER_SPEED = 120
+FPS = 60
 
 # CREATION OF THE GRAPHIC WINDOW
 # Initialization of pygame
 pygame.init()
 # Opening of pygame window (width ,height)
-window = pygame.display.set_mode((1224,420))
+window = pygame.display.set_mode((1224,600))
 # Name of the game as window's name
 pygame.display.set_caption("Shiho<3")
 # Control the frame rate
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf",30)
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf",30)
 active = True
 
 # BACKGROUND_1
 # Use of .convert() that helps the game run faster (use .convert_alpha if image seems weird)
 # Position pointer for rectangles (topleft,midtop,topright,midleft,center,midright,bottomleft,midbottom,bottomright)
-background_1 = pygame.image.load("Images/background_night_forest.png").convert()
+background_1 = pygame.image.load("Images/Backgrounds/background_forest_mountain.png").convert()
 background_xpos = 0
 background_xpos2 = 612
 background_xpos3 = 1224
@@ -38,13 +46,13 @@ text_timer = font.render("Timer 00.00", True, "White")
 timer_rect = text_timer.get_rect(topright = (1215,50))
 
 # PLATEFORM SURFACE
-plateform = pygame.Surface((50,5))
+plateform = pygame.Surface((50,50))
 plateform_rect = plateform.get_rect(bottomleft = (350, 220))
 # Color of the plateform with hex color code
 plateform.fill("#BBDE22")
 
 # PLAYER SURFACE
-player_shiho = pygame.image.load("Images/shiho_dollF.png").convert_alpha()
+player_shiho = pygame.Surface((50, 50))
 player_rect = player_shiho.get_rect(topleft = (5,380))
 player_gravity = -20
 

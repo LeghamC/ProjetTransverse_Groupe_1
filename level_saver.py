@@ -26,7 +26,6 @@ def save_level(file_name: str, file_content: list[list]) -> None:
 # Allows to load the content of a level from the name of the file
 # Returns the content of the level
 def load_level(file_name: str) -> list[list]:
-    import 
     content = []
     with open(file_name, 'r') as csv_file:
         reader = csv.reader(

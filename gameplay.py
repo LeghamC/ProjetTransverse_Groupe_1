@@ -55,7 +55,7 @@ pygame.mixer.music.load("levels/level_0/music.mid")
 pygame.mixer.music.play()
 
 # CAMERA
-camera_x = 0
+camera = scrolling.Camera()
 
 # Initialize aiming variables
 aiming = False
@@ -83,6 +83,7 @@ while True:
 
                 # Stop aiming and reset arrow angle
                 aiming = False
+                direction = 1
                 arrow_angle = -90
 
     if active:
@@ -92,15 +93,6 @@ while True:
         window.blit(text_score, score_rect)
         window.blit(text_timer, timer_rect)
 
-        camera_x = scrolling.update_camera_pos(camera_x, player_rect)
-        for element in elements:
-            scrolling.camera_render(
-                pygame.Surface((element.w, element.h)),
-                element,
-                window,
-                camera_x
-            )
-
         player_velocity += player_acceleration * dt
         player_position += player_velocity * dt
         player_rect.y = player_position.y
@@ -109,6 +101,14 @@ while True:
             player_velocity = Vector(PLAYER_SPEED, 0)
             player_position.y = constants.SCREEN_H - 50
             player_rect.bottom = constants.SCREEN_H
+
+        camera.update_position(player_rect)
+        for element in elements:
+            camera.render_element(
+                pygame.Surface((element.w, element.h)),
+                element,
+                window
+            )
 
         background_xpos -= 2
         background_xpos2 -= 2
@@ -128,18 +128,17 @@ while True:
             arrow_rect = arrow_image_rotated.get_rect(center=(arrow_x, arrow_y))
 
             # Draw the arrow
-            scrolling.camera_render(
+            camera.render_element(
                 arrow_image_rotated,
                 arrow_rect,
-                window,
-                camera_x
+                window
             )
 
             # Increment arrow angle for next frame
             arrow_angle += 5 * direction
 
             # Change direction at 90 and -90 degrees
-            if arrow_angle >= 90 or arrow_angle <= -90:
+            if arrow_angle > 90 or arrow_angle < -90:
                 direction *= -1
 
         # Collision detection
@@ -155,11 +154,10 @@ while True:
                     pygame.mixer.music.stop()
                     active = False
 
-        scrolling.camera_render(
+        camera.render_element(
             player_shiho,
             player_rect,
-            window,
-            camera_x
+            window
         )
     else:
         window.fill("red")

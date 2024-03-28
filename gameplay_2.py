@@ -21,12 +21,12 @@ FPS = 60
 # Initialization of pygame
 pygame.init()
 # Opening of pygame window (width ,height)
-window = pygame.display.set_mode((1224,600))
+window = pygame.display.set_mode((1224, 600))
 # Name of the game as window's name
 pygame.display.set_caption("Shiho<3")
 # Control the frame rate
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf",30)
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
 active = True
 
 # BACKGROUND_1
@@ -39,14 +39,14 @@ background_xpos3 = 1224
 
 # DISPLAY OF NUMBER OF RINGS GATHERED
 text_score = font.render("Rings  000", True, "Gold")
-score_rect = text_score.get_rect(topright = (1215,10))
+score_rect = text_score.get_rect(topright = (1215, 10))
 
 # DISPLAY OF TIMER
 text_timer = font.render("Timer 00.00", True, "White")
-timer_rect = text_timer.get_rect(topright = (1215,50))
+timer_rect = text_timer.get_rect(topright = (1215, 50))
 
 # PLATEFORM SURFACE
-plateform = pygame.Surface((50,50))
+plateform = pygame.Surface((50, 50))
 plateform_rect = plateform.get_rect(bottomleft = (350, 220))
 # Color of the plateform with hex color code
 plateform.fill("#BBDE22")

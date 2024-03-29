@@ -42,7 +42,7 @@ arrow_image = pygame.transform.scale(arrow_image, (40, 20))
 
 # Initialize aiming variables
 aiming = False
-arrow_angle = -90
+arrow_angle = 0
 direction = 1  # 1 for clockwise, -1 for counter-clockwise
 arrow_radius = 50  # Distance from player
 

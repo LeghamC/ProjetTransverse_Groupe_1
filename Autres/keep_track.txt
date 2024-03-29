@@ -1,0 +1,7 @@
+Gravity :
+Ajout constant pour position -> ne suis pas la loi de Newton car constante.
+
+Arrow file :
+
+sprite demi cercle sur sprite du player
+Mouvement arrow sur demi-cercle : coordonnées polaire avec argument

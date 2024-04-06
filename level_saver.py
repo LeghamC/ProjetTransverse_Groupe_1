@@ -1,5 +1,7 @@
 import csv
 import pygame
+from physics import Vector
+from Platform import Platform
 
 
 # Used to signify if the note is a rest or an actual note
@@ -60,7 +62,7 @@ def list_of_elements(level_content: list[list],
         h = 20
         w = width_element(i[1], player_speed)
 
-        elements.append(pygame.Rect(x, y, w, h))
+        elements.append(Platform(Vector(x, y), w, h))
     return elements
 
 

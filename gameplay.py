@@ -6,10 +6,12 @@ import level_saver
 import collisions
 import scrolling
 import constants
+from Player import Player
+from Obstacle import Obstacle
 
 
 # CONSTANTS
-PLAYER_SPEED = 120
+PLAYER_SPEED = 200
 FPS = 60
 
 
@@ -25,7 +27,9 @@ dt = clock.tick(FPS) * 0.001
 active = True
 
 # Load images and create surfaces
-background_1 = pygame.image.load("Images/Backgrounds/background_night_forest.png").convert()
+background_1 = pygame.image.load(
+    "Images/Backgrounds/background_night_forest.png"
+).convert()
 background_xpos = 0
 background_xpos2 = 612
 background_xpos3 = 1224
@@ -36,11 +40,8 @@ score_rect = text_score.get_rect(topright=(1215, 10))
 text_timer = font.render("Timer 00.00", True, "white")
 timer_rect = text_timer.get_rect(topright=(1215, 50))
 
-player_shiho = pygame.Surface((50, 50))
-player_rect = player_shiho.get_rect(bottomleft=(0, 420))
-player_position = Vector(0, 420)
-player_velocity = Vector(PLAYER_SPEED, 0)  # Initial player velocity
-player_acceleration = Vector(0, 150)  # Gravity vector
+player = Player(Vector(0, 420), PLAYER_SPEED)
+player_group = pygame.sprite.GroupSingle(player)
 
 game_over_text = font.render("GAME OVER", True, "black")
 game_over_rect = game_over_text.get_rect(center=(612, 230))
@@ -50,7 +51,8 @@ arrow_image = pygame.transform.scale(arrow_image, (40, 20))
 
 # LOADING LEVEL
 level_content = level_saver.load_level("levels/level_0/content.csv")
-elements = level_saver.list_of_elements(level_content, PLAYER_SPEED)
+platforms = level_saver.list_of_elements(level_content, PLAYER_SPEED)
+platforms_group = pygame.sprite.Group(platforms)
 pygame.mixer.music.load("levels/level_0/music.mid")
 pygame.mixer.music.play()
 
@@ -63,6 +65,11 @@ arrow_angle = -90
 direction = 1  # 1 for clockwise, -1 for counter-clockwise
 arrow_radius = 50  # Distance from player
 
+# obstacle = Obstacle(Vector(500, 200), 50, 100)
+obstacles = pygame.sprite.Group()
+
+is_grounded = False
+
 # Loop to keep the window open
 while True:
     for event in pygame.event.get():
@@ -71,20 +78,20 @@ while True:
             exit()
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and player_rect.top >= 0:
+            if event.key == pygame.K_SPACE and player.rect.top >= 0:
                 # Player starts aiming when space bar is held down
-                aiming = True
+                aiming = player.grounded
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and aiming:
                 # Player is shot in the direction of the arrow when space bar is released
-                player_velocity.y += make_vector_polar(200, -arrow_angle).y
-                print(player_velocity)
+                player.velocity.y += make_vector_polar(200, -arrow_angle).y
+                print("Applied Velocity: ", player.velocity)
 
                 # Stop aiming and reset arrow angle
                 aiming = False
                 direction = 1
-                arrow_angle = -90
+                arrow_angle = 0
 
     if active:
         window.blit(background_1, (background_xpos, 0))
@@ -93,20 +100,24 @@ while True:
         window.blit(text_score, score_rect)
         window.blit(text_timer, timer_rect)
 
-        player_velocity += player_acceleration * dt
-        player_position += player_velocity * dt
-        player_rect.y = player_position.y
-        player_rect.x = player_position.x
-        if player_rect.bottom > constants.SCREEN_H:
-            player_velocity = Vector(PLAYER_SPEED, 0)
-            player_position.y = constants.SCREEN_H - 50
-            player_rect.bottom = constants.SCREEN_H
+        player.update(dt)
+        if player.rect.bottom >= constants.SCREEN_H:
+            player.velocity.y = 0
+            player.position.y = constants.SCREEN_H - player.rect.height
+            player.rect.bottom = constants.SCREEN_H
 
-        camera.update_position(player_rect)
-        for element in elements:
+        camera.update_position(player.rect)
+        for element in platforms:
             camera.render_element(
-                pygame.Surface((element.w, element.h)),
-                element,
+                pygame.Surface((element.rect.w, element.rect.h)),
+                element.rect,
+                window
+            )
+
+        for element in obstacles:
+            camera.render_element(
+                pygame.Surface((element.rect.w, element.rect.h)),
+                element.rect,
                 window
             )
 
@@ -120,8 +131,8 @@ while True:
 
         if aiming:
             # Update arrow position on a semicircle path to the right of the player
-            arrow_x = player_rect.centerx + arrow_radius * math.cos(math.radians(arrow_angle))
-            arrow_y = player_rect.centery - arrow_radius * math.sin(math.radians(arrow_angle))
+            arrow_x = player.rect.centerx + arrow_radius * math.cos(math.radians(arrow_angle))
+            arrow_y = player.rect.centery - arrow_radius * math.sin(math.radians(arrow_angle))
 
             # Rotate arrow to point towards the player
             arrow_image_rotated = pygame.transform.rotate(arrow_image, arrow_angle)
@@ -142,21 +153,28 @@ while True:
                 direction *= -1
 
         # Collision detection
-        for element in elements:
-            if element.x > player_rect.right:
+        for element in platforms:
+            if element.rect.x > player.rect.right:
                 break
-            if player_rect.colliderect(element):
-                if collisions.top_collision(player_rect, element):
-                    player_position.y = element.top - 50
-                    player_rect.bottom = element.top
-                    player_velocity = Vector(PLAYER_SPEED, 0)
+            if player.rect.colliderect(element.rect.move(0, -1)):
+                if collisions.top_collision(player.rect, element.rect.move(0, -1)):
+                    player.position.y = element.rect.top - player.rect.height
+                    player.rect.bottom = element.rect.top
+                    player.velocity.x = PLAYER_SPEED
+                    player.velocity.y = 0
                 else:
                     pygame.mixer.music.stop()
                     active = False
+        player.grounded = (player.velocity.y == 0)
+
+        for element in obstacles:
+            if player.rect.colliderect(element.rect):
+                pygame.mixer.music.stop()
+                active = False
 
         camera.render_element(
-            player_shiho,
-            player_rect,
+            player.image,
+            player.rect,
             window
         )
     else:

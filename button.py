@@ -9,6 +9,9 @@
 import pygame
 pygame.init()
 
+window = pygame.display.set_mode((600, 500)) # width, height
+font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf", 30)
+
 # BUTTON CLASS TO CLICK
 class Button :
     """
@@ -38,10 +41,10 @@ class Button :
         button_rect = pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
         if self.active:
             if self.click():
-                pygame.draw.rect(window, "dark gray", button_rect, 0, 5)
+                pygame.draw.rect(window, "dark grey", button_rect, 0, 5) # Color when collision with the button
             else:
-                pygame.draw.rect(window, "gray", button_rect, 0, 5)
-        pygame.draw.rect(window, "black", button_rect, 2, 5) # Border of the button
+                pygame.draw.rect(window, "black", button_rect, 0, 5) #color of inside the button
+        pygame.draw.rect(window, "white", button_rect, 2, 5) # Border of the button
         button_text = font.render(self.text, True, "white")
         window.blit(button_text, (self.x_pos + 3, self.y_pos + 3))
 

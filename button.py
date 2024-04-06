@@ -10,7 +10,7 @@ import pygame
 pygame.init()
 
 window = pygame.display.set_mode((600, 500)) # width, height
-font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf", 30)
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
 
 # BUTTON CLASS TO CLICK
 class Button :

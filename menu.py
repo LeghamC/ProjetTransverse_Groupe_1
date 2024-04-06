@@ -19,7 +19,7 @@ pygame.init()
 window = pygame.display.set_mode((600, 500)) # width, height
 pygame.display.set_caption("Shiho<3")
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/future-timesplitters/Future TimeSplitters.otf", 30)
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
 menu = True
 active = True
 

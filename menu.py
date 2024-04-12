@@ -27,9 +27,9 @@ main_menu = False
 menu_command = 0
 active = True
 
-# Create the buttons outside the draw_menu() function
-exit_butt = Button('Exit', 10, 10, 50, 25)
-settings_butt = Button('Spring', 120, 180, 100, 50)
+# Create all the buttons
+exit_butt = Button('Exit', 12, 12, 80, 50)
+settings_butt = Button('', 535, 12, 45, 45, "Images/settings.png")
 level1_butt = Button('Spring', 120, 180, 100, 50)
 level2_butt = Button('Summer', 120, 240, 100, 50)
 level3_butt = Button('Fall', 120, 300, 100, 50)
@@ -43,7 +43,7 @@ def draw_menu():
     menu_title = font.render('Shiho <3', True, 'green')
     window.blit(menu_title, (135, 127))
 
-    # Draw all buttons
+    # Draw all the buttons
     exit_butt.draw()
     settings_butt.draw()
     level1_butt.draw()
@@ -62,6 +62,8 @@ def draw_menu():
         command = 3
     if level4_butt.click():
         command = 4
+    if settings_butt.click():
+        command = 5
 
     return command
 
@@ -81,7 +83,7 @@ while active:
         main_menu = draw_game()
         if menu_command > 0:
             text_transition = font.render(f'Button: {menu_command}', True, "white")
-            window.blit(text_transition, (300, 400))
+            window.blit(text_transition, (200, 100))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

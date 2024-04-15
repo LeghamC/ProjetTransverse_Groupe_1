@@ -25,24 +25,24 @@ background_menu = pygame.transform.scale(background_menu, (600, 500))
 shiho = pygame.image.load("Images/Player/Shiho_calligraphy.png").convert_alpha()
 shiho = pygame.transform.scale(shiho, (40, 20))
 main_menu = False
-menu_command = 0
+menu_command = -1
 active = True
 
 # Create all the buttons
 exit_butt = Button('Exit', 12, 12, 80, 50)
 settings_butt = Button('', 535, 12, 45, 45, "Images/settings.png")
-level1_butt = Button('Spring', 120, 180, 100, 50)
-level2_butt = Button('Summer', 120, 240, 100, 50)
-level3_butt = Button('Fall', 120, 300, 100, 50)
-level4_butt = Button('Winter', 120, 360, 100, 50)
+level1_butt = Button('Spring', 20, 290, 100, 50)
+level2_butt = Button('Summer', 180, 290, 100, 50)
+level3_butt = Button('Fall', 330, 290, 100, 50)
+level4_butt = Button('Winter', 480, 290, 100, 50)
 
 def draw_menu():
     command = -1
     window.blit(background_menu, (0, 0))  # Draw background image first
-    pygame.draw.rect(window, 'brown', [120, 120, 260, 40], 0, 5)
-    pygame.draw.rect(window, 'dark blue', [120, 120, 260, 40], 5, 5)
+    pygame.draw.rect(window, 'black', [175, 100, 260, 40], 0, 5)
+    pygame.draw.rect(window, 'dark blue', [175, 100, 260, 40], 5, 5)
     menu_title = font.render('Shiho <3', True, 'green')
-    window.blit(menu_title, (135, 127))
+    window.blit(menu_title, (260, 105))
 
     # Draw all the buttons
     exit_butt.draw()
@@ -70,7 +70,7 @@ def draw_menu():
 
 def draw_game():
     window.blit(background_menu, (0, 0))
-    menu_butt = Button("Game menu (Shiho <3)", 130, 10, 320, 70)
+    menu_butt = Button("Game menu (Shiho <3)", 130, 30, 320, 70)
     menu_butt.draw()
     menu = menu_butt.click()
     return menu
@@ -82,9 +82,11 @@ while active:
             main_menu = False
     else:
         main_menu = draw_game()
-        if menu_command > 0 and menu_command != 4:
+        if menu_command > -1 and menu_command!= 0 and menu_command != 4:
             text_transition = font.render(f'Button: {menu_command}', True, "white")
             window.blit(text_transition, (200, 100))
+        elif menu_command == 0:
+            active = False
         elif menu_command == 4:
             gameplay.GAME()
 

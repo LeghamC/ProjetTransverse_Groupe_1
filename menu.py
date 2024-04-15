@@ -10,6 +10,7 @@ import pygame
 import math
 from sys import exit
 from button import *
+import gameplay
 
 # Initialization of pygame
 pygame.init()
@@ -81,9 +82,11 @@ while active:
             main_menu = False
     else:
         main_menu = draw_game()
-        if menu_command > 0:
+        if menu_command > 0 and menu_command != 4:
             text_transition = font.render(f'Button: {menu_command}', True, "white")
             window.blit(text_transition, (200, 100))
+        elif menu_command == 4:
+            gameplay.GAME()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

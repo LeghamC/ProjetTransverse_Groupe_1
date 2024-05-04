@@ -21,7 +21,7 @@ def GAME():
 
     # Create a window
     window = pygame.display.set_mode((constants.SCREEN_W, constants.SCREEN_H))
-    pygame.display.set_caption("Shiho<3")
+    pygame.display.set_caption("Aux Quatres Temps")
     clock = pygame.time.Clock()
     font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
     dt = clock.tick(FPS) * 0.001
@@ -32,7 +32,7 @@ def GAME():
     input_manager = InputManager()
 
     # Load images and create surfaces
-    background_1 = pygame.image.load("Images/Backgrounds/Winter_bg.png").convert_alpha()
+    background_1 = pygame.image.load("Images/Backgrounds/WinterBG.jpg").convert_alpha()
     background_xpos = 0
     background_xpos2 = 612
     background_xpos3 = 1224

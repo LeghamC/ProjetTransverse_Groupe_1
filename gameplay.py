@@ -7,13 +7,14 @@ import collisions
 import scrolling
 import constants
 from Player import Player
+from InputManager import InputManager
 from Obstacle import Obstacle
+
 
 def GAME():
     # CONSTANTS
-    PLAYER_SPEED = 200
+    PLAYER_SPEED = 100
     FPS = 60
-
 
     # Initialization of pygame
     pygame.init()
@@ -25,6 +26,10 @@ def GAME():
     font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
     dt = clock.tick(FPS) * 0.001
     active = True
+
+    # Will keep record of the inputs
+    # Each Object that needs info about inputs to receive will keep a reference to that object
+    input_manager = InputManager()
 
     # Load images and create surfaces
     background_1 = pygame.image.load("Images/Backgrounds/Winter_bg.png").convert_alpha()
@@ -38,14 +43,11 @@ def GAME():
     text_timer = font.render("Timer 00.00", True, "white")
     timer_rect = text_timer.get_rect(topright=(1215, 50))
 
-    player = Player(Vector(0, 420), PLAYER_SPEED)
+    player = Player(Vector(0, 420), PLAYER_SPEED, input_manager)
     player_group = pygame.sprite.GroupSingle(player)
 
     game_over_text = font.render("GAME OVER", True, "black")
     game_over_rect = game_over_text.get_rect(center=(612, 230))
-
-    arrow_image = pygame.image.load("Images/arrow_beta.png").convert_alpha()
-    arrow_image = pygame.transform.scale(arrow_image, (40, 20))
 
     # LOADING LEVEL
     level_content = level_saver.load_level("levels/level_0/content.csv")
@@ -57,39 +59,15 @@ def GAME():
     # CAMERA
     camera = scrolling.Camera()
 
-    # Initialize aiming variables
-    aiming = False
-    arrow_angle = -90
-    direction = 1  # 1 for clockwise, -1 for counter-clockwise
-    arrow_radius = 50  # Distance from player
-
     # obstacle = Obstacle(Vector(500, 200), 50, 100)
     obstacles = pygame.sprite.Group()
 
-    is_grounded = False
-
     # Loop to keep the window open
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and player.rect.top >= 0:
-                    # Player starts aiming when space bar is held down
-                    aiming = player.grounded
-
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE and aiming:
-                    # Player is shot in the direction of the arrow when space bar is released
-                    player.velocity.y += make_vector_polar(200, -arrow_angle).y
-                    print("Applied Velocity: ", player.velocity)
-
-                    # Stop aiming and reset arrow angle
-                    aiming = False
-                    direction = 1
-                    arrow_angle = 0
+        input_manager.update(pygame.event.get())
+        if input_manager.QUIT:
+            pygame.quit()
+            exit()
 
         if active:
             window.blit(background_1, (background_xpos, 0))
@@ -127,28 +105,13 @@ def GAME():
                 background_xpos2 = 612
                 background_xpos3 = 1224
 
-            if aiming:
-                # Update arrow position on a semicircle path to the right of the player
-                arrow_x = player.rect.centerx + arrow_radius * math.cos(math.radians(arrow_angle))
-                arrow_y = player.rect.centery - arrow_radius * math.sin(math.radians(arrow_angle))
-
-                # Rotate arrow to point towards the player
-                arrow_image_rotated = pygame.transform.rotate(arrow_image, arrow_angle)
-                arrow_rect = arrow_image_rotated.get_rect(center=(arrow_x, arrow_y))
-
+            if player.arrow.aiming:
                 # Draw the arrow
                 camera.render_element(
-                    arrow_image_rotated,
-                    arrow_rect,
+                    player.arrow.rotated_image,
+                    player.arrow.rect,
                     window
                 )
-
-                # Increment arrow angle for next frame
-                arrow_angle += 5 * direction
-
-                # Change direction at 90 and -90 degrees
-                if arrow_angle > 90 or arrow_angle < -90:
-                    direction *= -1
 
             # Collision detection
             for element in platforms:

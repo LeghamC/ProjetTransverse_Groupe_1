@@ -13,7 +13,7 @@ from Obstacle import Obstacle
 
 def GAME():
     # CONSTANTS
-    PLAYER_SPEED = 100
+    PLAYER_SPEED = 120
     FPS = 60
 
     # Initialization of pygame
@@ -50,10 +50,10 @@ def GAME():
     game_over_rect = game_over_text.get_rect(center=(612, 230))
 
     # LOADING LEVEL
-    level_content = level_saver.load_level("levels/level_0/content.csv")
+    level_content = level_saver.load_level("levels/Winter/content.csv")
     platforms = level_saver.list_of_elements(level_content, PLAYER_SPEED)
     platforms_group = pygame.sprite.Group(platforms)
-    pygame.mixer.music.load("levels/level_0/music.mid")
+    pygame.mixer.music.load("Musics/winter.ogg")
     pygame.mixer.music.play()
 
     # CAMERA

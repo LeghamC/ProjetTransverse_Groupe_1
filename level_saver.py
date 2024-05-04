@@ -89,28 +89,27 @@ def make_content(tempo: int, notes: list[list[float, int, bool]]):
 
 # Tutorial level content
 level_content = make_content(
-    tempo=80,
+    tempo=150,
     notes=[
-        [1, 0, REST],
-        [4, 0, REST],
+        [23, 0, REST],
+        [4, 3, AUDIBLE],
 
-        [1, 2, AUDIBLE],
-        [1, 3, AUDIBLE],
-        [2, 5, AUDIBLE],
-
-        [1, 5, AUDIBLE],
-        [1, 4, AUDIBLE],
+        [2, 4, AUDIBLE],
         [2, 3, AUDIBLE],
+        [4, 2, AUDIBLE],
 
-        [1, 4, AUDIBLE],
-        [1, 4, AUDIBLE],
-        [1, 3, AUDIBLE],
-        [1, 4, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 2, AUDIBLE],
+        [4, 1, AUDIBLE],
 
-        [4, 2, AUDIBLE]
+        [2, 2, AUDIBLE],
+        [2, 1, AUDIBLE],
+        [4, 0, AUDIBLE],
+
+        [2, 1, AUDIBLE],
+        [2, 0, AUDIBLE],
     ]
 )
 
 if __name__ == "__main__":
-    print(level_content)
-    save_level("levels/level_0/content.csv", level_content)
+    save_level("levels/Winter/content.csv", level_content)

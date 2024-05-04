@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, position: Vector, vx: float, input_manager) -> None:
         pygame.sprite.Sprite.__init__(self)
 
+        self.jump_force = 300
         self.y_factor = 3
 
         self.input_manager = input_manager
@@ -16,13 +17,14 @@ class Player(pygame.sprite.Sprite):
         self.velocity = Vector(vx, 0)
         self.acceleration = Vector(0, 150)
 
-        self.image = pygame.image.load(
-            "Images/Player/sprite_image.png").convert_alpha()
+        self.image = pygame.transform.scale(
+            pygame.image.load("Images/Player/WinterCharacter.png").convert_alpha(),
+            (40, 40)
+        )
         self.rect = self.image.get_rect(topleft=(position.x, position.y))
 
         self.arrow = ArrowT()
         self.grounded = False
-
 
     def update(self, dt: float):
         self.arrow.update(self)
@@ -35,4 +37,4 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.position.y -= 1
-        self.velocity.y += make_vector_polar(200, -self.arrow.angle).y
+        self.velocity.y += make_vector_polar(self.jump_force, -self.arrow.angle).y

@@ -13,7 +13,7 @@ from Obstacle import Obstacle
 
 def GAME():
     # CONSTANTS
-    PLAYER_SPEED = 120
+    PLAYER_SPEED = 160
     FPS = 60
 
     # Initialization of pygame

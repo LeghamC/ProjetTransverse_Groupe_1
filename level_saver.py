@@ -91,23 +91,73 @@ def make_content(tempo: int, notes: list[list[float, int, bool]]):
 level_content = make_content(
     tempo=150,
     notes=[
-        [23, 0, REST],
-        [4, 3, AUDIBLE],
+        [21, 0, REST],
+        [4, 3, AUDIBLE],  # 1
 
         [2, 4, AUDIBLE],
         [2, 3, AUDIBLE],
-        [4, 2, AUDIBLE],
+        [4, 2, AUDIBLE],  # 2
 
         [2, 3, AUDIBLE],
         [2, 2, AUDIBLE],
-        [4, 1, AUDIBLE],
+        [4, 1, AUDIBLE],  # 3
 
         [2, 2, AUDIBLE],
         [2, 1, AUDIBLE],
-        [4, 0, AUDIBLE],
+        [4, 0, AUDIBLE],  # 4
 
         [2, 1, AUDIBLE],
         [2, 0, AUDIBLE],
+
+        [2, 3, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 8, AUDIBLE],
+
+        [2, 7, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 7, AUDIBLE],
+        [2, 8, AUDIBLE],
+        [2, 7, REST],
+
+        [2, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 7, AUDIBLE],
+        [2, 8, AUDIBLE],
+        [2, 7, REST],
+
+        [2, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
+        [2, 6, AUDIBLE],
+        [2, 7, AUDIBLE],
+        [2, 6, AUDIBLE],
+
+        [4, 5, AUDIBLE],
+        [4, 3, AUDIBLE],
+
+        [4, 6, AUDIBLE],
+        [4, 4, AUDIBLE],
+
+        [4, 7, AUDIBLE],
+        [4, 5, AUDIBLE],
+
+        [1, 1, REST],
+        [4, 4, AUDIBLE],
+        [4, 3, AUDIBLE],
+
+        [4, 6, AUDIBLE],
+        [2, 5, AUDIBLE],
     ]
 )
 

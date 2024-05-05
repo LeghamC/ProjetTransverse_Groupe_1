@@ -1,0 +1,44 @@
+# IMPORTATION OF MODULES
+import pygame
+import math
+from sys import exit
+from button import *
+from SceneManager import *
+from Scene import *
+from InputManager import *
+from constants import *
+import gameplay
+
+FPS = 60
+
+# Initialization of pygame
+pygame.init()
+
+# Create a window for the menu
+window = pygame.display.set_mode((SCREEN_W, SCREEN_H))  # width, height
+pygame.display.set_caption("Aux Quatres Temps")
+clock = pygame.time.Clock()
+dt = 0
+font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 20)
+Button.font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
+
+input_manager = InputManager()
+
+scene_manager = SceneManager(input_manager)
+scene_manager.load_scene(0)
+
+active = True
+
+while active:
+    input_manager.update(pygame.event.get())
+    if input_manager.QUIT:
+        pygame.quit()
+        exit()
+    active = active and scene_manager.update(dt)
+    scene_manager.current_scene.draw(window)
+
+    pygame.display.update()
+    dt = clock.tick(FPS) * 0.001
+
+pygame.quit()
+exit()

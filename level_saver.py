@@ -2,6 +2,7 @@ import csv
 import pygame
 from physics import Vector
 from Platform import Platform
+from constants import *
 
 
 # Used to signify if the note is a rest or an actual note
@@ -47,14 +48,14 @@ def position_on_screen(element_time: float, player_speed: int) -> int:
 
 # Takes an element's duration and the player's speed and returns the width
 # that the element should have
-def width_element(element_duration: float, player_speed: int) -> int:
+def width_element(element_duration: float, player_speed: int) -> float:
     return element_duration * player_speed
 
 
 # Takes the content of a level and returns a list of rectangles
 # associated with this content
 def list_of_elements(level_content: list[list],
-                     player_speed: int) -> list[pygame.Rect]:
+                     player_speed: int) -> list[pygame.sprite.Sprite]:
     elements = []
     for i in level_content:
         x = position_on_screen(i[0], player_speed)
@@ -69,7 +70,7 @@ def list_of_elements(level_content: list[list],
 # Allows to represent the height of an element as a small integer
 # Example: height_level: 1 -> height: 410
 def height_level_to_height(height_level: int) -> int:
-    return 460 - height_level * 50
+    return SCREEN_H*(1 - height_level * 5 / 46)
 
 
 # Allows to create level_content manually
@@ -157,7 +158,7 @@ level_content = make_content(
         [4, 3, AUDIBLE],
 
         [4, 6, AUDIBLE],
-        [2, 5, AUDIBLE],
+        [3, 5, AUDIBLE],
     ]
 )
 

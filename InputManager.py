@@ -17,10 +17,12 @@ class InputManager:
                     self.QUIT = 1
                     break
                 case (pygame.KEYDOWN):
+                    print("DOWN: ", event.key)
                     self.KEYDOWN.add(event.key)
                     self.HELD.add(event.key)
                     break
                 case (pygame.KEYUP):
+                    print("UP: ", event.key)
                     self.KEYUP.add(event.key)
                     if event.key in self.HELD:
                         self.HELD.remove(event.key)

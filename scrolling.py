@@ -4,12 +4,12 @@ from physics import Vector
 
 
 class Camera:
-    def __init__(self, group: set = None):
+    def __init__(self, window_size):
         self.position = Vector(0, 0)
-        self.group = group
+        self.window_size = window_size
 
     def update_position(self, player_rect: pygame.Rect):
-        offset_x = player_rect.centerx - constants.SCREEN_W/2 - self.position.x
+        offset_x = player_rect.centerx - self.window_size[0]/2 - self.position.x
         if (offset_x > 0):
             self.position.x += offset_x
 

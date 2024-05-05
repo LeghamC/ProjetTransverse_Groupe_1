@@ -57,7 +57,7 @@ def GAME():
     pygame.mixer.music.play()
 
     # CAMERA
-    camera = scrolling.Camera()
+    camera = scrolling.Camera((constants.SCREEN_W, constants.SCREEN_H))
 
     # obstacle = Obstacle(Vector(500, 200), 50, 100)
     obstacles = pygame.sprite.Group()

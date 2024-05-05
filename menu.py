@@ -20,6 +20,7 @@ window = pygame.display.set_mode((600, 500))  # width, height
 pygame.display.set_caption("Aux Quatres Temps")
 clock = pygame.time.Clock()
 font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 20)
+Button.font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
 background_menu = pygame.image.load("Images/Menu/MenuAmsterdamOne.png").convert_alpha()
 background_menu = pygame.transform.scale(background_menu, (600, 500))
 shiho = pygame.image.load("Images/Player/WinterCharacter.png").convert_alpha()
@@ -29,8 +30,10 @@ menu_command = -1
 active = True
 
 # Create all the buttons
-exit_butt = Button('Exit', 20, 12, 80, 50)
-settings_butt = Button('', 535, 12, 45, 45, "Images/SettingsIcon.png")
+exit_butt = Button('Exit', 20, 12, 80, 50,
+                   cmd=(EXIT_GAME, []))
+settings_butt = Button('', 535, 12, 45, 45,
+                       image="Images/SettingsIcon.png", cmd=(SWITCH_STATE, 2))
 level1_butt = Button('Winter', 20, 400, 110, 50)
 level2_butt = Button('Summer', 175, 400, 130, 50)
 level3_butt = Button('Spring', 335, 400, 110, 50)
@@ -39,41 +42,43 @@ level4_butt = Button('Fall', 495, 400, 80, 50)
 def draw_menu():
     command = -1
     window.blit(background_menu, (0, 0))  # Draw background image first
-    #pygame.draw.rect(window, 'black', [175, 100, 260, 40], 0, 5)
-    #pygame.draw.rect(window, 'dark blue', [175, 100, 260, 40], 5, 5)
-    #menu_title = font.render('Aux Quatres Temps', True, 'white')
-    #window.blit(menu_title, (260, 105))
+    # pygame.draw.rect(window, 'black', [175, 100, 260, 40], 0, 5)
+    # pygame.draw.rect(window, 'dark blue', [175, 100, 260, 40], 5, 5)
+    # menu_title = font.render('Aux Quatre Temps', True, 'white')
+    # window.blit(menu_title, (260, 105))
 
     # Draw all the buttons
-    exit_butt.draw()
-    settings_butt.draw()
-    level1_butt.draw()
-    level2_butt.draw()
-    level3_butt.draw()
-    level4_butt.draw()
+    exit_butt.draw(window)
+    settings_butt.draw(window)
+    level1_butt.draw(window)
+    level2_butt.draw(window)
+    level3_butt.draw(window)
+    level4_butt.draw(window)
 
     # Check for clicks on buttons
-    if exit_butt.click():
+    if exit_butt.is_clicked():
         command = 0
-    if level1_butt.click():
+    if level1_butt.is_clicked():
         command = 1
-    if level2_butt.click():
+    if level2_butt.is_clicked():
         command = 2
-    if level3_butt.click():
+    if level3_butt.is_clicked():
         command = 3
-    if level4_butt.click():
+    if level4_butt.is_clicked():
         command = 4
-    if settings_butt.click():
+    if settings_butt.is_clicked():
         command = 5
 
     return command
 
+
 def draw_game():
     window.blit(background_menu, (0, 0))
     menu_butt = Button("Play", 250, 440, 85, 50)
-    menu_butt.draw()
-    menu = menu_butt.click()
+    menu_butt.draw(window)
+    menu = menu_butt.is_clicked()
     return menu
+
 
 while active:
     if main_menu:

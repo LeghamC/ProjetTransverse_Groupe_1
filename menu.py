@@ -17,7 +17,7 @@ pygame.init()
 
 # Create a window for the menu
 window = pygame.display.set_mode((600, 500))  # width, height
-pygame.display.set_caption("Aux Quatres Temps")
+pygame.display.set_caption("Aux Quatre Temps")
 clock = pygame.time.Clock()
 font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 20)
 Button.font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
@@ -87,7 +87,7 @@ while active:
             main_menu = False
     else:
         main_menu = draw_game()
-        if menu_command > -1 and menu_command!= 0 and menu_command != 1:
+        if menu_command > -1 and menu_command != 0 and menu_command != 1:
             text_transition = font.render(f'incoming: {menu_command}', True, "white")
             window.blit(text_transition, (200, 100))
         elif menu_command == 0:

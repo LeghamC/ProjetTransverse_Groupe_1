@@ -5,10 +5,11 @@ from constants import *
 from Player import *
 from scrolling import *
 from collisions import *
+from InputManager import *
 import level_saver
 
 class Scene:
-    def __init__(self, input_manager):
+    def __init__(self, input_manager: InputManager):
         self.window: pygame.Surface
         self.background: pygame.Surface
         self.objects: list
@@ -116,6 +117,15 @@ class GameScene(Scene):
     def update(self, dt=0):
         if not self.active:
             return DO_NOTHING, []
+        if pygame.K_p in self.input_manager.KEYDOWN:
+            if self.current_state == 0:
+                self.current_state = 1
+                pygame.mixer.music.pause()
+            else:
+                self.current_state = 0
+                pygame.mixer.music.unpause()
+        if self.current_state == 1:
+            return DO_NOTHING, []
         self.background_x = (self.background_x - 2) % self.background_xmax - self.background_xmax
 
         self.player.update(dt)
@@ -129,7 +139,6 @@ class GameScene(Scene):
         self.camera.update_position(self.player.rect)
 
         removed = 0
-        i = 0
         for element in self.objects:
             if element.rect.right - self.camera.position.x < 0:
                 removed += 1
@@ -137,7 +146,6 @@ class GameScene(Scene):
                 element.tangible = False
             elif element.rect.x > self.player.rect.right:
                 break
-            i += 1
             if element.tangible and self.player.rect.colliderect(element.rect.move(0, -1)):
                 if top_collision(self.player.rect, element.rect.move(0, -1)):
                     self.player.position.y = element.rect.top - self.player.rect.height
@@ -147,7 +155,6 @@ class GameScene(Scene):
                 else:
                     pygame.mixer.music.stop()
                     self.active = False
-        print(i)
         self.objects = self.objects[removed:]
         self.player.grounded = (self.player.velocity.y == 0)
 
@@ -159,7 +166,6 @@ class GameScene(Scene):
         self.window.blit(self.background, (self.background_x, 0))
         self.window.blit(self.background, (self.background_x+self.background_xmax, 0))
         # self.window.blit(self.background, (self.background_x+2*self.background_xmax, 0))
-
 
         for element in self.objects:
             if element.rect.x - self.camera.position.x > SCREEN_W:
@@ -183,5 +189,10 @@ class GameScene(Scene):
             self.player.rect,
             self.window
         )
+
+        if self.current_state == 1:
+            s = pygame.Surface((SCREEN_W, SCREEN_H))
+            s.set_alpha(200)
+            self.window.blit(s, (0, 0))
 
         screen.blit(pygame.transform.scale(self.window, screen.get_size()), (0, 0))

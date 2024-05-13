@@ -3,10 +3,19 @@ import pygame.mixer_music
 from button import *
 from constants import *
 from Player import *
-from scrolling import *
+from Camera import *
 from collisions import *
 from InputManager import *
 import level_saver
+
+
+PLAYING = 0
+PAUSED = 1
+GAME_OVER = 2
+END_SCREEN = 3
+
+pygame.font.init()
+
 
 class Scene:
     def __init__(self, input_manager: InputManager):
@@ -20,6 +29,9 @@ class Scene:
 
     def update(self, dt=0):
         pass
+
+    def begin_level(self):
+        return
 
     def get_active_objects(self):
         if self.current_state == -1:
@@ -92,23 +104,35 @@ class GameScene(Scene):
         self.PLAYER_SPEED = 160
 
         self.window = pygame.Surface((SCREEN_W, SCREEN_H))
-        self.current_state = 0
+        self.current_state = PLAYING
 
         self.player = Player(Vector(0, 200), self.PLAYER_SPEED, self.input_manager)
         self.camera = Camera((SCREEN_W, SCREEN_H))
+
+        self.font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
+        self.pause_text = self.font.render("PAUSED", True, "white")
+        self.pause_rect = self.pause_text.get_rect(center=(SCREEN_W//2, SCREEN_H//3))
+        self.game_over_text = self.font.render("GAME OVER", True, "black")
+        self.game_over_rect = self.game_over_text.get_rect(center=(SCREEN_W//2, SCREEN_H//3))
 
         self.background_x = 0
 
         self.active = False
         match i:
-            case 0:
+            case 1:
+                self.scene_id = 1
                 self.background = pygame.image.load("Images/Backgrounds/WinterBG.jpg").convert_alpha()
-                self.background_xmax = self.background.get_size()[0]
+                self.background_x_max = self.background.get_size()[0]
                 self.objects = level_saver.list_of_elements(
                     level_saver.load_level("levels/Winter/content.csv"),
                     self.PLAYER_SPEED
                 )
                 pygame.mixer.music.load("Musics/winter.ogg")
+
+        self.restart_btn = button_by_center("Restart", SCREEN_W//4, SCREEN_H-60,
+                                            115, 50, cmd=(SWITCH_SCENE, [self.scene_id]))
+        self.menu_btn = button_by_center("Main Menu", 3*SCREEN_W//4, SCREEN_H-60,
+                                         175, 50, cmd=(SWITCH_SCENE, [0]))
 
     def begin_level(self):
         self.active = 1
@@ -124,9 +148,26 @@ class GameScene(Scene):
             else:
                 self.current_state = 0
                 pygame.mixer.music.unpause()
-        if self.current_state == 1:
+
+        if self.current_state == PLAYING:
+            return self.update_playing(dt)
+        elif self.current_state == PAUSED:
+            if self.menu_btn.is_clicked():
+                return self.menu_btn.cmd
+            elif self.restart_btn.is_clicked():
+                return self.restart_btn.cmd
             return DO_NOTHING, []
-        self.background_x = (self.background_x - 2) % self.background_xmax - self.background_xmax
+        elif self.current_state == GAME_OVER:
+            if self.menu_btn.is_clicked():
+                return self.menu_btn.cmd
+            elif self.restart_btn.is_clicked():
+                return self.restart_btn.cmd
+            return DO_NOTHING, []
+        elif self.current_state == END_SCREEN:
+            return DO_NOTHING, []
+
+    def update_playing(self, dt):
+        self.background_x = (self.background_x - 2) % self.background_x_max - self.background_x_max
 
         self.player.update(dt)
         if self.player.rect.bottom >= SCREEN_H:
@@ -153,8 +194,8 @@ class GameScene(Scene):
                     self.player.velocity.x = self.PLAYER_SPEED
                     self.player.velocity.y = 0
                 else:
+                    self.current_state = GAME_OVER
                     pygame.mixer.music.stop()
-                    self.active = False
         self.objects = self.objects[removed:]
         self.player.grounded = (self.player.velocity.y == 0)
 
@@ -163,9 +204,29 @@ class GameScene(Scene):
     def draw(self, screen):
         if not self.active:
             return
+
+        if self.current_state == PLAYING:
+            self.draw_playing()
+        elif self.current_state == PAUSED:
+            self.draw_playing()
+            s = pygame.Surface((SCREEN_W, SCREEN_H))
+            s.set_alpha(200)
+            self.window.blit(s, (0, 0))
+            self.window.blit(self.pause_text, self.pause_rect)
+            self.restart_btn.draw(self.window)
+            self.menu_btn.draw(self.window)
+        elif self.current_state == GAME_OVER:
+            self.window.fill("red")
+            self.window.blit(self.game_over_text, self.game_over_rect)
+            self.restart_btn.draw(self.window)
+            self.menu_btn.draw(self.window)
+
+        screen.blit(pygame.transform.scale(self.window, screen.get_size()), (0, 0))
+
+    def draw_playing(self):
         self.window.blit(self.background, (self.background_x, 0))
-        self.window.blit(self.background, (self.background_x+self.background_xmax, 0))
-        # self.window.blit(self.background, (self.background_x+2*self.background_xmax, 0))
+        self.window.blit(self.background, (self.background_x + self.background_x_max, 0))
+        # self.window.blit(self.background, (self.background_x+2*self.background_x_max, 0))
 
         for element in self.objects:
             if element.rect.x - self.camera.position.x > SCREEN_W:
@@ -189,10 +250,3 @@ class GameScene(Scene):
             self.player.rect,
             self.window
         )
-
-        if self.current_state == 1:
-            s = pygame.Surface((SCREEN_W, SCREEN_H))
-            s.set_alpha(200)
-            self.window.blit(s, (0, 0))
-
-        screen.blit(pygame.transform.scale(self.window, screen.get_size()), (0, 0))

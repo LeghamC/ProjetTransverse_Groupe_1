@@ -47,7 +47,6 @@ def make_vector_polar(magnitude: float, angle: float):
 
 
 # CONSTANTS FOR PHYSICS SIMULATION
-print(Vector(1, 2) + Vector(3, 4))
 gravity = Vector(0, -9.8)  # Represents the downward force
 friction = 0.99  # Coefficient for simulation of friction
 elasticity = 0.8  # Coefficient of kinetic energy preserved in collisions

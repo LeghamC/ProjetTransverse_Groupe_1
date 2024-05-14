@@ -48,7 +48,7 @@ class ArrowT(Arrow):
         self.angle += 5 * self.direction
 
         # Change direction at 90 and -90 degrees
-        if self.angle > 90 or self.angle < -90:
+        if self.angle > 90 or self.angle < 0:
             self.direction *= -1
 
     def reinitialize(self):

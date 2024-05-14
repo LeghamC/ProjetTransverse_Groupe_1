@@ -75,7 +75,7 @@ def height_level_to_height(height_level: int) -> int:
 
 # Allows to create level_content manually
 # note: [float note_length, int height_level, bool REST/AUDIBLE]
-def make_content(tempo: int, notes: list[list[float, int, bool]]):
+def make_content(tempo: int, notes: list[list[int | bool]]):
     elements = []
     current_time = 0.0
     time_multiplier = 60 / tempo
@@ -88,8 +88,9 @@ def make_content(tempo: int, notes: list[list[float, int, bool]]):
     return elements
 
 
-# Tutorial level content
-level_content = make_content(
+# Winter Level Content
+"""
+winter_content = make_content(
     tempo=150,
     notes=[
         [21, 0, REST],
@@ -161,6 +162,83 @@ level_content = make_content(
         [3, 5, AUDIBLE],
     ]
 )
+"""
+
+spring_content = make_content(
+    tempo=100,
+    notes=[
+        [6, 1, REST],
+        [4, 2, AUDIBLE],
+        [4, 1, REST],
+        [2, 2, AUDIBLE],
+        [2, 1, AUDIBLE],
+        [2, 1, REST],
+        [2, 1, AUDIBLE],
+        [2, 2, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 2, AUDIBLE],
+        [2, 1, AUDIBLE],
+        [2, 2, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 4, AUDIBLE],
+
+        [2, 2, AUDIBLE],
+        [2, 1, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 2, AUDIBLE],
+        [2, 3, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 3, AUDIBLE],
+
+        [1, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [0.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [1, 1, AUDIBLE],
+
+        [1, 2, AUDIBLE],
+
+        [1.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+        [1.5, 1, AUDIBLE],
+        [0.5, 1, REST],
+
+        [2, 3, AUDIBLE],
+
+        [2, 5, AUDIBLE],
+
+        [2, 5, AUDIBLE],
+        [2, 4, AUDIBLE],
+        [2, 3, AUDIBLE],
+
+        [1, 4, AUDIBLE],
+
+        [2, 3, AUDIBLE],
+        [2, 5, AUDIBLE],
+    ]
+)
 
 if __name__ == "__main__":
-    save_level("levels/Winter/content.csv", level_content)
+    # save_level("levels/Winter/content.csv", winter_content)
+    # save_level("levels/Summer/content.csv", summer_content)
+    # save_level("levels/Autumn/content.csv", autumn_content)
+    save_level("levels/Spring/content.csv", spring_content)

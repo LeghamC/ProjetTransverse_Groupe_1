@@ -17,14 +17,15 @@ class Player(pygame.sprite.Sprite):
         self.velocity = Vector(vx, 0)
         self.acceleration = Vector(0, 150)
 
-        self.image = pygame.transform.scale(
-            pygame.image.load("Images/Player/WinterCharacter.png").convert_alpha(),
-            (40, 40)
-        )
-        self.rect = self.image.get_rect(topleft=(position.x, position.y))
-
         self.arrow = ArrowT()
         self.grounded = False
+
+    def set_image(self, filename):
+        self.image = pygame.transform.scale(
+            pygame.image.load(filename).convert_alpha(),
+            (40, 40)
+        )
+        self.rect = self.image.get_rect(topleft=(self.position.x, self.position.y))
 
     def update(self, dt: float):
         self.arrow.update(self)

@@ -4,6 +4,7 @@ from physics import Vector
 
 class Platform(pygame.sprite.Sprite):
     SURFACES = {}
+
     def __init__(self, position: Vector, width: int, height: int) -> None:
         pygame.sprite.Sprite.__init__(self)
 

@@ -8,6 +8,11 @@ from collisions import *
 from InputManager import *
 import level_saver
 
+MENU_SCENE = 0
+WINTER_SCENE = 1
+SPRING_SCENE = 2
+SUMMER_SCENE = 3
+AUTUMN_SCENE = 4
 
 PLAYING = 0
 PAUSED = 1
@@ -17,6 +22,7 @@ END_SCREEN = 3
 pygame.font.init()
 
 
+# Class to Inherit to create a Scene
 class Scene:
     def __init__(self, input_manager: InputManager):
         self.window: pygame.Surface
@@ -27,6 +33,7 @@ class Scene:
 
         self.input_manager = input_manager
 
+    # Methods to overwrite
     def update(self, dt=0):
         pass
 
@@ -49,31 +56,37 @@ class GameMenu(Scene):
         super().__init__(input_manager)
         self.window = pygame.Surface((SCREEN_W, SCREEN_H))
         self.background = pygame.transform.scale(
-            pygame.image.load("Images/Menu/MenuAmsterdamOne.png").convert_alpha(),
+            pygame.image.load("Images/Menu/MenuAmsterdamOneUpdate.png").convert_alpha(),
             (SCREEN_W, SCREEN_H)
         )
+        # All the buttons appearing in the scene
         self.objects = [
-            button_by_center('Play', SCREEN_W//2, 0.9 * SCREEN_H, 85, 50,
+            button_by_center('Play', SCREEN_W//2, SCREEN_H - 60, 85, 50,
                              cmd=(SWITCH_STATE, [1])),
             Button('Exit', 20, 12, 80, 50,
                    cmd=(EXIT_GAME, [])),
             Button('', SCREEN_W-65, 12, 45, 45,
                    image="Images/SettingsIcon.png", cmd=(SWITCH_STATE, [2])),
             button_by_center('Winter', 0.13*SCREEN_W, SCREEN_H-60, 110, 50,
-                             cmd=(SWITCH_SCENE, [1])),
+                             cmd=(SWITCH_SCENE, [WINTER_SCENE])),
             button_by_center('Summer', 0.39*SCREEN_W, SCREEN_H-60, 130, 50,
-                             cmd=(SWITCH_SCENE, [2])),
+                             cmd=(SWITCH_SCENE, [SUMMER_SCENE])),
             button_by_center('Spring', 0.65*SCREEN_W, SCREEN_H-60, 110, 50,
-                             cmd=(SWITCH_SCENE, [3])),
+                             cmd=(SWITCH_SCENE, [SPRING_SCENE])),
             button_by_center('Fall', .91*SCREEN_W, SCREEN_H-60, 80, 50,
-                             cmd=(SWITCH_SCENE, [4])),
+                             cmd=(SWITCH_SCENE, [AUTUMN_SCENE])),
         ]
 
+        # Gives which button should be visible according to a certain state
         self.states = [
             [0],
             [1, 2, 3, 4, 5, 6],
             [0]
         ]
+
+        pygame.mixer.music.load("Musics/adaggio.ogg")
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.5)
 
         self.current_state = 0
 
@@ -83,13 +96,13 @@ class GameMenu(Scene):
         for button in self.get_active_objects():
             button.draw(self.window)
             if button.is_clicked():
-                pass
                 cmd_type, param = button.cmd
+                break
 
         if cmd_type == SWITCH_STATE:
             self.current_state = param[0]
         elif cmd_type == SWITCH_SCENE:
-            return SWITCH_SCENE, [1]
+            return SWITCH_SCENE, param
         elif cmd_type == EXIT_GAME:
             return EXIT_GAME, []
         return DO_NOTHING, []
@@ -101,7 +114,7 @@ class GameMenu(Scene):
 class GameScene(Scene):
     def __init__(self, i, input_manager):
         super().__init__(input_manager)
-        self.PLAYER_SPEED = 160
+        self.PLAYER_SPEED = 200
 
         self.window = pygame.Surface((SCREEN_W, SCREEN_H))
         self.current_state = PLAYING
@@ -118,16 +131,29 @@ class GameScene(Scene):
         self.background_x = 0
 
         self.active = False
-        match i:
-            case 1:
-                self.scene_id = 1
-                self.background = pygame.image.load("Images/Backgrounds/WinterBG.jpg").convert_alpha()
-                self.background_x_max = self.background.get_size()[0]
-                self.objects = level_saver.list_of_elements(
-                    level_saver.load_level("levels/Winter/content.csv"),
-                    self.PLAYER_SPEED
-                )
-                pygame.mixer.music.load("Musics/winter.ogg")
+
+        self.scene_id = i
+
+        # Loads the level according to which scene
+        # has to be loaded
+        if i == WINTER_SCENE:
+            self.background = pygame.image.load("Images/Backgrounds/WinterBG.jpg").convert_alpha()
+            self.background_x_max = self.background.get_size()[0]
+            self.objects = level_saver.list_of_elements(
+                level_saver.load_level("levels/Winter/content.csv"),
+                self.PLAYER_SPEED
+            )
+            pygame.mixer.music.load("Musics/winter.ogg")
+            self.player.set_image("Images/Player/WinterCharacter.png")
+        elif i == SPRING_SCENE:
+            self.background = pygame.image.load("Images/Backgrounds/SpringBG.jpg").convert_alpha()
+            self.background_x_max = self.background.get_size()[0]
+            self.objects = level_saver.list_of_elements(
+                level_saver.load_level("levels/Spring/content.csv"),
+                self.PLAYER_SPEED
+            )
+            pygame.mixer.music.load("Musics/spring.ogg")
+            self.player.set_image("Images/Player/SpringCharacter.png")
 
         self.restart_btn = button_by_center("Restart", SCREEN_W//4, SCREEN_H-60,
                                             115, 50, cmd=(SWITCH_SCENE, [self.scene_id]))

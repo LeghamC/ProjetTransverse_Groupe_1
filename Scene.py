@@ -204,7 +204,7 @@ class GameScene(Scene):
             return DO_NOTHING, []
 
     def update_playing(self, dt):
-        self.background_x = (self.background_x - 2) % self.background_x_max - self.background_x_max
+        # self.background_x = (self.background_x - 2) % self.background_x_max - self.background_x_max
 
         self.player.update(dt)
         if self.player.rect.bottom >= SCREEN_H:
@@ -261,9 +261,11 @@ class GameScene(Scene):
         screen.blit(pygame.transform.scale(self.window, screen.get_size()), (0, 0))
 
     def draw_playing(self):
-        self.window.blit(self.background, (self.background_x, 0))
-        self.window.blit(self.background, (self.background_x + self.background_x_max, 0))
+        # self.window.blit(self.background, (self.background_x, 0))
+        # self.window.blit(self.background, (self.background_x + self.background_x_max, 0))
         # self.window.blit(self.background, (self.background_x+2*self.background_x_max, 0))
+
+        self.camera.render_background(self.background, self.window)
 
         for element in self.objects:
             if element.rect.x - self.camera.position.x > SCREEN_W:

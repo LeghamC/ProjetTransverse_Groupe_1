@@ -6,11 +6,7 @@
 # -------------------------------------------------------------------------------
 
 # IMPORTATION OF MODULES
-import pygame
-import math
-from sys import exit
 from Button import *
-import Gameplay
 
 # Initialization of pygame
 pygame.init()

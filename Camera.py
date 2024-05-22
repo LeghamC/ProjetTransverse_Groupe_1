@@ -31,3 +31,8 @@ class Camera:
             screen: pygame.Surface,
             z_index: int = 1) -> None:
         screen.blit(surface, (rect.x - (self.position.x * z_index), rect.y))
+
+    def render_background(self, bg: pygame.Surface, screen: pygame.Surface):
+        x = (-self.position.x * 0.6) % bg.get_width() - bg.get_width()
+        screen.blit(bg, (x, 0))
+        screen.blit(bg, (x + bg.get_width(), 0))

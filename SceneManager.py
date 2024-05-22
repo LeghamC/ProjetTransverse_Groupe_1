@@ -1,10 +1,17 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - SceneManager class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
 from Scene import *
-from button import *
-
+from Button import *
 
 # Object that manages switching between scenes
 class SceneManager:
+    """handles the creation, updating, and switching of different game scenes."""
     def __init__(self, input_manager):
         self.input_manager = input_manager
         # Reference to the current scene
@@ -13,6 +20,7 @@ class SceneManager:
         self.current_scene_index = -1
 
     def load_scene(self, i):
+        """switches between different scenes"""
         if i == MENU_SCENE:
             self.current_scene = GameMenu(self.input_manager)
             self.current_scene_index = MENU_SCENE
@@ -21,6 +29,8 @@ class SceneManager:
             self.current_scene_index = i
 
     def update(self, dt):
+        """updates the current scene and
+        handles scene transitions based on commands returned from the scene update"""
         cmd_type, param = self.current_scene.update(dt)
         if cmd_type == EXIT_GAME:
             return 0

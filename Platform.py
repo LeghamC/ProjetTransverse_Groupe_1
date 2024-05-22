@@ -1,6 +1,12 @@
-import pygame
-from physics import Vector
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Plateform class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
 
+import pygame
+from Physics import Vector
 
 class Platform(pygame.sprite.Sprite):
     SURFACES = {}

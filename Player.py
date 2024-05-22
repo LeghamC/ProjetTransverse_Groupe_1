@@ -1,7 +1,14 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Player class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
 from Arrow import ArrowT, ArrowC
-from physics import Vector, make_vector_polar
-import constants
+from Physics import Vector, make_vector_polar
+import Constants
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,8 +24,8 @@ class Player(pygame.sprite.Sprite):
         self.velocity = Vector(vx, 0)
         self.acceleration = Vector(0, 150)
 
-        self.arrow = ArrowT()
-        self.grounded = False
+        self.arrow = ArrowT()  # represent the aiming direction
+        self.grounded = False  # True if player on the ground
 
     def set_image(self, filename):
         self.image = pygame.transform.scale(
@@ -37,5 +44,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = self.position.x
 
     def jump(self):
+        """Adjusts the player's position slightly upward to not have intersection with a platform.
+        Creates a vector representing the jump force in direction opposite to arrow's angle.
+        Updates the player's vertical velocity based on the jump force."""
         self.position.y -= 1
         self.velocity.y += make_vector_polar(self.jump_force, -self.arrow.angle).y

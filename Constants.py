@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
-# Author:      Lélia - Dali - Meïssa - Manon
-# Purpose:     Variables that need to be used by multiple programs of
-#              different abstraction level
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Variables used by multiple programs
 # Created:     02/03/2024
 # -------------------------------------------------------------------------------
 

@@ -1,13 +1,21 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Scene class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame.mixer_music
 
-from button import *
-from constants import *
+from Button import *
+from Constants import *
 from Player import *
 from Camera import *
-from collisions import *
+from Collisions import *
 from InputManager import *
-import level_saver
+import Level_saver
 
+# CONSTANTS
 MENU_SCENE = 0
 WINTER_SCENE = 1
 SPRING_SCENE = 2
@@ -24,6 +32,7 @@ pygame.font.init()
 
 # Class to Inherit to create a Scene
 class Scene:
+    # Create the game scenes
     def __init__(self, input_manager: InputManager):
         self.window: pygame.Surface
         self.background: pygame.Surface
@@ -52,6 +61,7 @@ class Scene:
 
 
 class GameMenu(Scene):
+    # Main menu of the game
     def __init__(self, input_manager):
         super().__init__(input_manager)
         self.window = pygame.Surface((SCREEN_W, SCREEN_H))
@@ -112,6 +122,7 @@ class GameMenu(Scene):
 
 
 class GameScene(Scene):
+    # Main gameplay scenes
     def __init__(self, i, input_manager):
         super().__init__(input_manager)
         self.PLAYER_SPEED = 200
@@ -139,8 +150,8 @@ class GameScene(Scene):
         if i == WINTER_SCENE:
             self.background = pygame.image.load("Images/Backgrounds/WinterBG.jpg").convert_alpha()
             self.background_x_max = self.background.get_size()[0]
-            self.objects = level_saver.list_of_elements(
-                level_saver.load_level("levels/Winter/content.csv"),
+            self.objects = Level_saver.list_of_elements(
+                Level_saver.load_level("levels/Winter/content.csv"),
                 self.PLAYER_SPEED
             )
             pygame.mixer.music.load("Musics/winter.ogg")
@@ -148,8 +159,8 @@ class GameScene(Scene):
         elif i == SPRING_SCENE:
             self.background = pygame.image.load("Images/Backgrounds/SpringBG.jpg").convert_alpha()
             self.background_x_max = self.background.get_size()[0]
-            self.objects = level_saver.list_of_elements(
-                level_saver.load_level("levels/Spring/content.csv"),
+            self.objects = Level_saver.list_of_elements(
+                Level_saver.load_level("levels/Spring/content.csv"),
                 self.PLAYER_SPEED
             )
             pygame.mixer.music.load("Musics/spring.ogg")

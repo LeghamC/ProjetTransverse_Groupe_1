@@ -1,5 +1,11 @@
-import pygame
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Input Manager class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
 
+import pygame
 
 # Stores Input of different types at each frame
 # Used so that any object can access user inputs

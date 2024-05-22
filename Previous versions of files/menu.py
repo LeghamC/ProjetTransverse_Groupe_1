@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
-# Name:        ???
-# Author:      Lélia
-# Purpose:     Project's menu - the menu's window
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project's menu - the gameplay window
 # Created:     01/02/2024
 # -------------------------------------------------------------------------------
 
@@ -9,8 +9,8 @@
 import pygame
 import math
 from sys import exit
-from button import *
-import gameplay
+from Button import *
+import Gameplay
 
 # Initialization of pygame
 pygame.init()
@@ -19,12 +19,12 @@ pygame.init()
 window = pygame.display.set_mode((600, 500))  # width, height
 pygame.display.set_caption("Aux Quatre Temps")
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 20)
-Button.font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
-background_menu = pygame.image.load("Images/Menu/MenuAmsterdamOne.png").convert_alpha()
+font = pygame.font.Font("../Font/VeganStylePersonalUse-5Y58.ttf", 20)
+Button.font = pygame.font.Font("../Font/VeganStylePersonalUse-5Y58.ttf", 30)
+background_menu = pygame.image.load("../Images/Menu/MenuAmsterdamOne.png").convert_alpha()
 background_menu = pygame.transform.scale(background_menu, (600, 500))
-shiho = pygame.image.load("Images/Player/WinterCharacter.png").convert_alpha()
-shiho = pygame.transform.scale(shiho, (40, 20))
+player = pygame.image.load("../Images/Player/WinterCharacter.png").convert_alpha()
+player = pygame.transform.scale(player, (40, 20))
 main_menu = False
 menu_command = -1
 active = True

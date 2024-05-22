@@ -1,12 +1,19 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project's menu - the gameplay window
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 # IMPORTATION OF MODULES
 import pygame
 import math
 from sys import exit
-from button import *
+from Button import *
 from SceneManager import *
 from Scene import *
 from InputManager import *
-from constants import *
+from Constants import *
 
 FPS = 60
 

@@ -1,5 +1,13 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - obstacle class that create the rectangles on which
+#              the player must jump
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
-from physics import Vector
+from Physics import Vector
 
 
 class Obstacle(pygame.sprite.Sprite):

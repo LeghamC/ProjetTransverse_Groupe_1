@@ -1,17 +1,17 @@
 # -------------------------------------------------------------------------------
-# Name:        ???
+# Name:        Aux Quatres Temps
 # Author:      Lélia - Dali - Meïssa - Manon - Mathis
-# Purpose:     Project's menu - the game's window
+# Purpose:     Project's menu - the gameplay window
 # Created:     01/02/2024
 # -------------------------------------------------------------------------------
 
 # IMPORTATIONS OF MODULES
 import pygame
 from sys import exit
-import level_saver
-import collisions
+import Level_saver
+import Collisions
 import scrolling
-import constants
+import Constants
 
 # CONSTANTS
 PLAYER_SPEED = 120
@@ -26,7 +26,7 @@ window = pygame.display.set_mode((1224, 600))
 pygame.display.set_caption("Shiho<3")
 # Control the frame rate
 clock = pygame.time.Clock()
-font = pygame.font.Font("Font/VeganStylePersonalUse-5Y58.ttf", 30)
+font = pygame.font.Font("../Font/VeganStylePersonalUse-5Y58.ttf", 30)
 active = True
 
 # BACKGROUND_1

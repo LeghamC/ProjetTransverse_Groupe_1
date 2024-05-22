@@ -1,11 +1,17 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project's menu - the gameplay window
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
 import math
 from sys import exit
-from physics import Vector, make_vector_polar
-import level_saver
-import collisions
-import scrolling
-import constants
+from Physics import Vector, make_vector_polar
+import Level_saver
+import Collisions
+import Constants
 from Player import Player
 from InputManager import InputManager
 from Obstacle import Obstacle

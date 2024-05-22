@@ -1,6 +1,13 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Camera class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
-import constants
-from physics import Vector
+import Constants
+from Physics import Vector
 
 
 class Camera:

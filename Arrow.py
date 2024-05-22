@@ -1,7 +1,14 @@
+# -------------------------------------------------------------------------------
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project Arrow file - 2 types of arrow class
+# Created:     01/02/2024
+# -------------------------------------------------------------------------------
+
 import pygame
-from physics import Vector
+from Physics import Vector
 import math
-import constants
+import Constants
 
 
 class Arrow:
@@ -27,6 +34,8 @@ class Arrow:
 
 
 class ArrowT(Arrow):
+    """type of arrow that Automatically oscillates the aiming angle
+    and triggers a jump when the space key is released."""
     def __init__(self) -> None:
         super().__init__()
         self.direction = 1
@@ -58,6 +67,8 @@ class ArrowT(Arrow):
 
 
 class ArrowC(Arrow):
+    """type of arrow that allows the player to manually control the aiming angle
+    with specific keys and triggers a jump when the space key is pressed."""
     def __init__(self) -> None:
         super().__init__()
 

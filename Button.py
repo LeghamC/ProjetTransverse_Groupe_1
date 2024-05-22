@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
-# Name:        ???
-# Author:      Lélia
-# Purpose:     Button to click
+# Name:        Aux Quatres Temps
+# Author:      Lélia - Dali - Meïssa - Manon - Mathis
+# Purpose:     Project - Button class
 # Created:     18/03/2024
 # -------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ class Button:
             image: str = "", cmd=(DO_NOTHING, [])) -> None:
         self.text = text
         self.image = pygame.image.load("Images/SettingsIcon.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (40, 40))
+        self.image = pygame.transform.scale(self.image, (40, 40)).convert_alpha()
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.width = width
@@ -44,7 +44,7 @@ class Button:
 
     def draw(self, surface):
         """
-                Make the characteristics of the button (color, surface) and print it on the screen
+                Make the characteristics of the button (color, surface) and print it on the screen.
         """
         if self.is_clicked():
             pygame.draw.rect(surface, "white", self.button_rect, 0, 5) # Color when collision with the button
@@ -61,8 +61,8 @@ class Button:
         return self.button_rect.collidepoint(pygame.mouse.get_pos()) and \
                pygame.mouse.get_pressed()[0]
 
-
 def button_by_center(text, x, y, w, h, img="", cmd=(DO_NOTHING, [])):
+    """allow to specify the center position, rather than the top-left corner when called"""
     x = x - w//2
     y = y - h//2
     return Button(text, x, y, w, h, img, cmd)

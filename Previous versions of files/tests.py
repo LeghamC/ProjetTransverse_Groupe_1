@@ -1,10 +1,10 @@
 
 # IMPORTATIONS OF MODULES
 import pygame
-import level_saver
-import collisions
+import Level_saver
+import Collisions
 import scrolling
-import constants
+import Constants
 from sys import exit
 
 # CONSTANTS
@@ -34,7 +34,7 @@ player_gravity = 0
 # LOADING LEVEL
 level_content = level_saver.load_level("levels/level_0/content.csv")
 elements = level_saver.list_of_elements(level_content, PLAYER_SPEED)
-pygame.mixer.music.load("levels/level_0/music.mid")
+pygame.mixer.music.load("../levels/level_0/music.mid")
 pygame.mixer.music.play()
 
 # CAMERA

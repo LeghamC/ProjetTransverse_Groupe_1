@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Name:        Aux Quatres Temps
+# Name:        Aux Quatre Temps
 # Author:      Lélia - Dali - Meïssa - Manon - Mathis
 # Purpose:     Project - Vector class used for physics
 # Created:     01/02/2024

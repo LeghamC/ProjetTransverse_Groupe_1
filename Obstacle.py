@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Name:        Aux Quatres Temps
+# Name:        Aux Quatre Temps
 # Author:      Lélia - Dali - Meïssa - Manon - Mathis
 # Purpose:     Project - obstacle class that create the rectangles on which
 #              the player must jump

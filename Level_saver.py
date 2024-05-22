@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------------
-# Name:        Aux Quatres Temps
+# Name:        Aux Quatre Temps
 # Author:      Lélia - Dali - Meïssa - Manon - Mathis
 # Purpose:     Project - create, save, load, and convert level content for the game
 # Created:     01/02/2024

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------
-# Name:        Aux Quatres Temps
+# Name:        Aux Quatre Temps
 # Author:      Lélia - Dali - Meïssa - Manon - Mathis
 # Purpose:     Project - Button class
 # Created:     18/03/2024
